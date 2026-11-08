@@ -23,9 +23,3 @@ export const auth = betterAuth({
         },
     },
 });
-
-const sql = postgres();
-export const getUserId = async (user_name: string) => {
-    const result = await sql`SELECT * FROM app_user WHERE name = ${user_name};`;
-    return result[0];
-};

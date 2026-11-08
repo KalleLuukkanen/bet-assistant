@@ -17,6 +17,7 @@ app.all("/api/auth/*", toNodeHandler(auth));
 
 app.use(express.json());
 
+
 // Attach userId to every request if a valid session exists
 app.use(async (req, res, next) => {
     const session = await auth.api.getSession({ headers: fromNodeHeaders(req.headers) });
@@ -27,6 +28,8 @@ app.use(async (req, res, next) => {
     return next();
 });
 
+// routes not protected for now
+/*
 // Reject unauthenticated requests to protected routes
 app.use("/api", (req, res, next) => {
     const userId = (req as any).userId;
@@ -35,6 +38,7 @@ app.use("/api", (req, res, next) => {
     }
     return next();
 });
+*/
 
 // Example protected route — replace with your own controllers
 app.get("/api/me", (req, res) => {

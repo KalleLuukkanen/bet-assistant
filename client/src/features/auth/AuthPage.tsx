@@ -1,6 +1,7 @@
 import { LogIn, LogOut, UserPlus } from "lucide-react";
 import { authClient } from "../../utils/auth";
 import { useState, type FormEvent } from "react";
+import Loading from "../../components/Loading";
 
 function AuthPage() {
     const { data: session, isPending } = authClient.useSession();
@@ -20,7 +21,7 @@ function AuthPage() {
         if (error) setError(error.message ?? "Something went wrong");
     };
 
-    if (isPending) return <p className="p-8">Loading…</p>;
+    if (isPending) return <Loading />;
 
     if (session) {
         return (
@@ -51,10 +52,10 @@ function AuthPage() {
                 value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} />
             {error && <p className="text-sm text-red-600">{error}</p>}
             <button type="submit"
-                className="flex w-full items-center justify-center gap-2 rounded bg-gray-900 px-4 py-2 text-white">
+                className="flex w-full items-center justify-center gap-2 rounded bg-gray-900 px-4 py-2 text-white cursor-pointer">
                 {mode === "signup" ? <><UserPlus size={16} /> Sign up</> : <><LogIn size={16} /> Sign in</>}
             </button>
-            <button type="button" className="w-full text-sm text-gray-600 underline"
+            <button type="button" className="w-full text-sm text-gray-600 underline cursor-pointer"
                 onClick={() => setMode(mode === "signup" ? "signin" : "signup")}>
                 {mode === "signup" ? "Have an account? Sign in" : "No account? Sign up"}
             </button>
