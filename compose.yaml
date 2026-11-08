@@ -1,0 +1,40 @@
+services:
+  client:
+    build: client
+    restart: unless-stopped
+    volumes:
+      - ./client/src:/app/src
+    ports:
+      - 5173:5173
+    depends_on:
+      - server
+
+  server:
+    build: server
+    restart: unless-stopped
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+      - ./project.env:/app/.env
+    ports:
+      - 8000:8000
+    depends_on:
+      database-migrations:
+        condition: service_completed_successfully
+
+  database:
+    container_name: bet-assistant_database
+    image: postgres:17.5
+    restart: unless-stopped
+    env_file:
+      - project.env
+
+  database-migrations:
+    image: flyway/flyway:11.10
+    env_file:
+      - project.env
+    depends_on:
+      - database
+    volumes:
+      - ./database-migrations:/flyway/db/migration
+    command: -connectRetries=60 -baselineOnMigrate=true migrate
