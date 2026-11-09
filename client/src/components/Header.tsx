@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { LogIn } from "lucide-react";
+import { LogIn, House } from "lucide-react";
 
 const sports: Record<string, string[]> = {
     Basketball: ["NBA", "EuroLeague"],
@@ -34,6 +34,12 @@ function Header() {
     return (
         <div className="flex bg-black p-4">
             <ul className="flex space-x-6 ml-4">
+                <a
+                    className="text-gray-300 cursor-pointer"
+                    href="/"
+                >
+                    <House />
+                </a>
                 {Object.entries(sports).map(([sport, leagues]) => (
                     <li key={sport} className="relative">
                         <button
