@@ -38,7 +38,7 @@ function AuthPage() {
     }
 
     return (
-        <form onSubmit={onSubmit} className="mx-auto mt-16 max-w-sm space-y-3 p-4">
+        <form onSubmit={onSubmit} className="mx-auto mt-16 max-w-sm space-y-3 p-4 bg-white rounded shadow">
             <h1 className="text-2xl font-semibold">
                 {mode === "signup" ? "Create account" : "Sign in"}
             </h1>
