@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { LogIn, House } from "lucide-react";
-
-const sports: Record<string, string[]> = {
-    Basketball: ["NBA", "EuroLeague"],
-    Football: ["LaLiga", "Premier League", "Bundesliga"],
-    Hockey: ["Liiga", "NHL"],
-};
+import { sports } from "../types/sports";
 
 function LeagueList({ leagues }: { leagues: string[] }) {
     return (
