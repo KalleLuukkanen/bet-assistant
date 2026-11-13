@@ -29,6 +29,37 @@ services:
     env_file:
       - project.env
 
+  # one-off job, not started by `docker compose up`. Run with:
+  #   docker compose run --rm nba-ingest
+  #   docker compose run --rm nba-ingest python -m collectors.nba_collector --seasons 2026-27
+  nba-ingest:
+    build: python-service
+    profiles: ["ingest"]
+    env_file:
+      - project.env
+    volumes:
+      - ./python-service:/app
+    depends_on:
+      database-migrations:
+        condition: service_completed_successfully
+    command: python -m collectors.nba_collector
+
+  # daily sync of the current season (runs with `docker compose up`)
+  nba-sync:
+    build: python-service
+    restart: unless-stopped
+    env_file:
+      - project.env
+    environment:
+      PYTHONUNBUFFERED: "1"  # print logs immediately
+      # NBA_SYNC_HOUR_UTC: "18"
+    volumes:
+      - ./python-service:/app
+    depends_on:
+      database-migrations:
+        condition: service_completed_successfully
+    command: python -m collectors.scheduler
+
   database-migrations:
     image: flyway/flyway:11.10
     env_file:
